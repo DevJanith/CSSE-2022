@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 //import routes
 
 import userRoutes from "./routes/user.routes.js";
+import JourneyRoutes from "./routes/journey.routes.js";
 
 const app = express();
 dotenv.config();
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/ticketnow/api/v1/user", userRoutes);
+app.use("/ticketnow/api/v1/journey", JourneyRoutes);
 
 const CONNECTION_URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.pjvaggo.mongodb.net/?retryWrites=true&w=majority`;
 

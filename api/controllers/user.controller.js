@@ -173,6 +173,32 @@ export const checkOTP = async (req, res) => {
   }
 };
 
+// Add credit to passenger account
+
+export const addCredit = async (req, res) => {
+  const { userID, amount } = req.body;
+
+  const existingUser = await User.findOne({ userID: userID });
+
+  if (!existingUser)
+    return res.status(404).json({ code: "02", message: "User doesn't exist" });
+  let currentCredit = existingUser.creditAmount;
+  let newAmount = 0;
+
+  newAmount = 0 + amount;
+  newAmount = newAmount + currentCredit;
+
+  await User.updateOne(
+    { userID: userID },
+    {
+      $set: {
+        creditAmount: newAmount,
+      },
+    }
+  );
+  res.status(200).json({ code: "01", result: "credit added" });
+};
+
 // mail service
 function mailService(email, password) {
   let transporter = nodemailer.createTransport({
