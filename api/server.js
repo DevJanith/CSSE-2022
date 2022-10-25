@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 // import feedbackRoutes from "./routes/feedback.routes.js";
 // import itemRoutes from "./routes/item.routes.js";
 // import tutorialRoutes from "./routes/tutorial.routes.js";
-// import userRoutes from "./routes/user.routes.js";
+import userRoutes from "./routes/user.routes.js";
 // import productRoutes from "./routes/product.routes.js";
 
 const app = express();
@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 // app.use("/shop-house/tutorial", tutorialRoutes);
-// app.use("/shop-house/user", userRoutes);
+app.use("/ticketnow/api/v1/user", userRoutes);
 // app.use("/shop-house/feedback", feedbackRoutes);
 // app.use("/shop-house/item", itemRoutes);
 // app.use("/shop-house/product", productRoutes);
