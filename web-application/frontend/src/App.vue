@@ -1,28 +1,17 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="./assets/logo.png"
           transition="scale-transition"
-          width="40"
+          width="50"
         />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <h1 class="text--white">Ticket Now</h1>
       </div>
 
       <v-spacer></v-spacer>
@@ -38,18 +27,33 @@
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: "App",
 
   data: () => ({
     //
   }),
 };
 </script>
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@600;621&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+.app-text {
+  font-family: "Quicksand", sans-serif;
+}
+.heading {
+  font-size: 20px;
+  font-family: "Quicksand", sans-serif;
+  color: #4e4e6a;
+  font-weight: 600;
+}
+</style>
