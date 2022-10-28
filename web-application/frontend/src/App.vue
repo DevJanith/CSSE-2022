@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <!-- <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -24,7 +24,8 @@
         <span class="mr-2">Latest Release</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-    </v-app-bar>
+    </v-app-bar> -->
+    <!-- <app-bar /> -->
 
     <v-main>
       <router-view />
@@ -33,7 +34,9 @@
 </template>
 
 <script>
+import AppBar from "./views/AppBar.vue";
 export default {
+  components: { AppBar },
   name: "App",
 
   data: () => ({
@@ -51,9 +54,34 @@ export default {
   font-family: "Quicksand", sans-serif;
 }
 .heading {
-  font-size: 20px;
+  font-size: 25px;
   font-family: "Quicksand", sans-serif;
   color: #4e4e6a;
+  font-weight: 600;
+}
+
+.headingLarge {
+  font-size: 30;
+  font-family: "Quicksand", sans-serif;
+  color: #4e4e6a;
+  font-weight: 800;
+}
+
+.title {
+  font-size: 20px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+}
+
+.titleLarge {
+  font-size: 25px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+}
+
+.titleSmall {
+  font-size: 15px;
+  font-family: "Quicksand", sans-serif;
   font-weight: 600;
 }
 </style>

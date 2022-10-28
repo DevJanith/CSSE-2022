@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Login from "../components/main/Login.vue";
 import Register from "../components/main/Registration.vue";
+import Passenger from "../components/dashboard/Passenger.vue";
+import TransportManager from "../components/dashboard/TransportManager.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +23,16 @@ const routes = [
     path: "/register",
     name: "register",
     component: Register,
+  },
+  {
+    path: "/passenger-dashboard",
+    name: "passngerDashbaord",
+    component: Passenger,
+  },
+  {
+    path: "/manager-dashboard",
+    name: "managerDashboard",
+    component: TransportManager,
   },
   {
     path: "/about",

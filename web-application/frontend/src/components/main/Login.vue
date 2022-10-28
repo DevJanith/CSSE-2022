@@ -1,5 +1,6 @@
 <template>
   <div class="fill-height secondary">
+    <login-app-bar />
     <v-container>
       <v-row align="center" justify="center">
         <v-col cols="5">
@@ -22,12 +23,12 @@
                 <v-form ref="form" @submit.prevent="login">
                   <v-container>
                     <div>
-                      <p class="app-text">User Name</p>
+                      <p class="app-text">User ID</p>
                       <v-text-field
-                        label="Username"
+                        label="NIC / Passport NUmber"
                         outlined
-                        v-model="userName"
-                        :rules="userNameCheck"
+                        v-model="userID"
+                        :rules="userIDCheck"
                         dense
                       ></v-text-field>
                     </div>
@@ -69,6 +70,7 @@
                         width="100%"
                         class="text-capitalize"
                         type="submit"
+                        :loading="isLoading"
                         >Log in</v-btn
                       >
                     </div>
@@ -86,44 +88,19 @@
         {{ message.text }}
       </div>
     </v-snackbar>
-    <div class="text-center">
-      <v-dialog v-model="dialog" width="500" persistent>
-        <!-- <template v-slot:activator="{ on, attrs }">
-          <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
-            Click Me
-          </v-btn>
-        </template> -->
-
-        <v-card>
-          <v-card-title class="text-h5 primary white--text">
-            The user is already logged in!
-          </v-card-title>
-
-          <v-card-text class="mt-2"> Are you sure to login? </v-card-text>
-
-          <v-divider></v-divider>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="green" @click="logToTheSystem" class="mr-5" outlined>
-              Yes
-            </v-btn>
-            <v-btn color="red" @click="dialog = false" outlined> No </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import AppBar from "@/views/AppBar.vue";
+import LoginAppBar from "@/views/appbars/LoginAppBar.vue";
 
 export default {
-  components: {},
+  components: { AppBar, LoginAppBar },
   data() {
     return {
-      userName: "",
+      userID: "",
       value: true,
       password: "",
       isLoading: false,
@@ -134,196 +111,54 @@ export default {
         text: "",
         color: "",
       },
-      userNameCheck: [(v) => !!v || "User Name is required"],
+      userIDCheck: [(v) => !!v || "User Name is required"],
       passwordcheck: [(v) => !!v || "Password is required"],
     };
   },
   methods: {
-    logToTheSystem() {
-      const isValid = this.$refs.form.validate();
+    login() {
+      this.isLoading = true;
+      let data = {
+        userID: this.userID,
+        password: this.password,
+      };
 
-      if (isValid) {
-        this.isLoading = true;
-
-        const data = {
-          username: this.userName,
-          password: this.password,
-        };
-        console.log(data);
-        axios
-          //.post(`/vxSafenet/api/v1/auth/login-user`, data)
-          .post(`/api/auth/sign-in`, data)
-          .then((response) => {
-            this.isLoading = false;
-
-            console.log("LoginPage");
-            // console.log(response.data.privileges);
-            if (response.status === 200) {
-              console.log(response.data);
-
-              this.token = response.data.accessToken;
-              sessionStorage.setItem("role", response.data.userRole);
-
-              sessionStorage.setItem("username", data.username);
-
-              sessionStorage.setItem("tokenLocal", this.token);
-              sessionStorage.setItem("privileges", response.data.privileges);
-              this.$store.commit("setAuthentication", true);
-              this.$store.commit("setPrivileges", response.data.privileges);
-
-              console.log(this.$store.state.authenticated);
-
-              if (response.data.userStatus == 1) {
-                this.$router.push(
-                  "/first-time-login/" + response.data.username
-                );
-              } else {
-                this.$router.push("/dashboard");
-              }
-
-              this.message.chip = false;
-            } else {
-              this.message.chip = true;
-              this.message.text = response.data;
-              this.message.color = "primary";
-
-              console.log(response);
-              this.$store.commit("setAuthentication", false);
-              this.$store.commit("setPrivileges", []);
-            }
-          })
-          .catch((error) => {
-            (error) => (this.status = error.response.data.status);
+      axios
+        .post(`/ticketnow/api/v1/user/sign-in`, data)
+        .then((response) => {
+          this.verifyingOTP = false;
+          if (response.status == 200) {
             this.isLoading = false;
             this.message.chip = true;
-            this.message.text = error.response.data;
-            this.message.color = "red";
-            console.log(error);
-            this.$store.commit("setAuthentication", false);
-            this.$store.commit("setPrivileges", []);
-          });
-      }
-    },
-    async login() {
-      const isValid = await this.$refs.form.validate();
+            this.message.text = "Email verified";
+            this.message.color = "green";
 
-      if (isValid) {
-        this.isLoading = true;
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("userID", response.data.result.userID);
+            sessionStorage.setItem("email", response.data.result.email);
+            sessionStorage.setItem("name", response.data.result.name);
+            sessionStorage.setItem("id", response.data.result._id);
 
-        const data = {
-          username: this.userName,
-          password: this.password,
-        };
-        console.log(data);
-        axios
-          //.post(`/vxSafenet/api/v1/auth/login-user`, data)
-          .post(`/api/auth/check-login`, data)
-          .then((response) => {
-            this.isLoading = false;
-
-            console.log("LoginPage");
-            // console.log(response.data.privileges);
-            if (response.status === 200) {
-              if (response.data === true) {
-                this.dialog = true;
-              } else {
-                this.dialog = false;
-                this.isLoading = true;
-                axios
-                  //.post(`/vxSafenet/api/v1/auth/login-user`, data)
-                  .post(`/api/auth/sign-in`, data)
-                  .then((response) => {
-                    this.isLoading = false;
-
-                    console.log("LoginPage");
-                    // console.log(response.data.privileges);
-                    if (response.status === 200) {
-                      this.isLoading = false;
-                      console.log(response.data);
-
-                      this.token = response.data.accessToken;
-                      // window.localStorage.setItem(
-                      //   "role",
-                      //   response.data.userRole
-                      // );
-
-                      // window.localStorage.setItem("username", data.username);
-                      sessionStorage.setItem("role", response.data.userRole);
-
-                      sessionStorage.setItem("username", data.username);
-
-                      sessionStorage.setItem("tokenLocal", this.token);
-                      sessionStorage.setItem(
-                        "privileges",
-                        response.data.privileges
-                      );
-                      this.$store.commit("setAuthentication", true);
-                      this.$store.commit(
-                        "setPrivileges",
-                        response.data.privileges
-                      );
-
-                      console.log(this.$store.state.authenticated);
-                      if (response.data.userStatus == 1) {
-                        this.$router.push(
-                          "/first-time-login/" + response.data.username
-                        );
-                      } else {
-                        this.$router.push("/dashboard");
-                      }
-
-                      this.message.chip = false;
-                    } else {
-                      this.message.chip = true;
-                      this.message.text =
-                        "Please Enter Valid user name or password";
-                      this.message.color = "primary";
-
-                      console.log(response);
-                      this.$store.commit("setAuthentication", false);
-                      this.$store.commit("setPrivileges", []);
-                    }
-                  })
-                  .catch((error) => {
-                    (error) => (this.status = error.response.data.status);
-                    this.isLoading = false;
-                    this.message.chip = true;
-                    this.message.text = error.response.data;
-                    this.message.color = "red";
-                    console.log(error);
-                    this.$store.commit("setAuthentication", false);
-                    this.$store.commit("setPrivileges", []);
-                  });
-                this.message.chip = false;
-              }
-            } else {
-              this.message.chip = true;
-              this.message.text = response.data;
-              this.message.color = "primary";
-
-              console.log(response);
-              this.$store.commit("setAuthentication", false);
-              this.$store.commit("setPrivileges", []);
+            if (response.data.result.type == "passenger") {
+              this.$router.push("/passenger-dashboard");
+            } else if (response.data.result.type == "manager") {
+              this.$router.push("/manager-dashboard");
             }
-          })
-          .catch((error) => {
-            (error) => (this.status = error.response.data.status);
+          } else {
             this.isLoading = false;
             this.message.chip = true;
-            this.message.text = "Please Enter Valid user name or password";
+            this.message.text = "Login Failed";
             this.message.color = "red";
-            console.log(error);
-            this.$store.commit("setAuthentication", false);
-            this.$store.commit("setPrivileges", []);
-          });
+          }
+        })
+        .catch((err) => {
+          this.isLoading = false;
+          this.message.chip = true;
+          this.message.text = "Login Failed";
+          this.message.color = "red";
 
-        // .catch((error) => {
-        //   (error) => (this.status = error.response.data.status);
-        //   console.log(error.response.data);
-        //   console.log(error.response.status);
-        //   console.log(error.response.headers);
-        // });
-      }
+          console.log(err);
+        });
     },
   },
 };
