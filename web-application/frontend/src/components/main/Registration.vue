@@ -69,7 +69,7 @@
                           <div>
                             <p class="app-text">Mobile Number</p>
                             <v-text-field
-                              label="Please Enter your mobile number here"
+                              label="Ex :- 07xxxxxxxx"
                               outlined
                               v-model="mobileNumber"
                               :rules="phoneNumberRules"

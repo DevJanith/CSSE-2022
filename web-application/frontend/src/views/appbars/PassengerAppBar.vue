@@ -26,17 +26,36 @@
       </v-row>
     </div>
 
-    <v-btn @click="logout()" text>
+    <v-btn @click="confirmDialog.show = true" text>
       <span class="mr-2">Logout</span>
       <v-icon>logout</v-icon>
     </v-btn>
+
+    <ConfirmDialog
+      v-if="confirmDialog.show"
+      :message="confirmDialog.message"
+      :message1="confirmDialog.message1"
+      :buttonText="confirmDialog.buttonText"
+      @close-alert="confirmDialog.show = false"
+      @confirm-alert="logout()"
+    />
   </v-app-bar>
 </template>
 
 <script>
+import ConfirmDialog from "../../components/common/ConfirmDialog.vue";
 export default {
+  components: {
+    ConfirmDialog,
+  },
   data() {
     return {
+      confirmDialog: {
+        show: false,
+        message: "Logout",
+        message1: "Are you sure you want to logout?",
+        buttonText: "Yes",
+      },
       name: sessionStorage.getItem("name"),
       type: "Passenger",
     };
@@ -52,4 +71,3 @@ export default {
 </script>
 
 <style scoped></style>
->

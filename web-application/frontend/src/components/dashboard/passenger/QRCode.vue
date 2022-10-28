@@ -29,7 +29,7 @@
             ><div class="white--text">Download QR Code</div>
             <v-icon right dark color="white"> download </v-icon></v-btn
           >
-
+          <p class="text-left otpText mt-10">User ID : {{ this.userID }}</p>
           <p class="text-left otpText mt-10">
             <v-icon>info</v-icon>
             Use this QR code to scan at the starting point of your journey and

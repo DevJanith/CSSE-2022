@@ -4,7 +4,6 @@ const journeySchema = mongoose.Schema({
   busNo: {
     type: String,
     required: true,
-    unique: true,
   },
   passenger: {
     type: mongoose.Schema.Types.ObjectId,

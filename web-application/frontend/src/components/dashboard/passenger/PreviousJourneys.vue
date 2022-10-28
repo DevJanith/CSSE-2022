@@ -3,20 +3,161 @@
     <v-card
       min-height="450"
       min-width="300"
+      max-height="800"
       elevation="14"
       rounded="true"
       class="pa-7"
     >
       <v-row class="mb-5">
         <v-icon size="30">airport_shuttle</v-icon>
-        <h1 class="heading ml-4">Previous Journeys</h1>
+        <h1 class="heading ml-4">Your Trips</h1>
+
+        <v-container fluid>
+          <v-data-table
+            class="app-text tableText secondary table dataTable"
+            :headers="headers"
+            :items="tableData"
+            :loading="tableLoading"
+            loading-text
+            :footer-props="footerProps"
+          >
+            <!-- header -->
+            <template v-slot:[`header.date`]="{ header }">
+              <v-icon small class="mr-1 mb-1">calendar_month</v-icon
+              >{{ header.text }}
+            </template>
+
+            <template v-slot:[`header.busNo`]="{ header }">
+              <v-icon small class="mr-1 mb-1">airport_shuttle</v-icon
+              >{{ header.text }}
+            </template>
+
+            <template v-slot:[`header.startLocation`]="{ header }">
+              <v-icon small class="mr-1 mb-1">start</v-icon>{{ header.text }}
+            </template>
+
+            <template v-slot:[`header.endLocation`]="{ header }">
+              <v-icon small class="mr-1 mb-1">flag</v-icon>{{ header.text }}
+            </template>
+
+            <template v-slot:[`header.fare`]="{ header }">
+              <v-icon small class="mr-1 mb-1">paid</v-icon>{{ header.text }}
+            </template>
+
+            <!-- data -->
+            <!-- <template v-slot:[`item.month`]="{ item }">
+              <div>
+                <router-link
+                  class-active="active"
+                  :to="'/monthly-active-subscribers/' + item.month"
+                  >{{ convertMonth(item.month) }}</router-link
+                >
+              </div>
+            </template> -->
+          </v-data-table>
+        </v-container>
       </v-row>
     </v-card>
   </div>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      footerProps: { "items-per-page-options": [5, 10] },
+      tableLoading: false,
+      headers: [
+        {
+          text: "Bus No",
+          align: "start",
+          filterable: false,
+          value: "busNo",
+          class: "white",
+        },
+
+        {
+          text: "Date",
+          align: "start",
+          value: "date",
+          class: "white",
+        },
+        {
+          text: "Start Location",
+          value: "startLocation",
+          align: "start",
+          class: "white",
+        },
+        {
+          text: "End Location",
+          value: "endLocation",
+          align: "start",
+          class: "white",
+        },
+        {
+          text: "Fare",
+          value: "fare",
+          align: "start",
+          class: "white",
+        },
+      ],
+
+      tableData: [],
+    };
+  },
+
+  methods: {
+    getJourneys() {
+      this.tableLoading = true;
+      const id = sessionStorage.getItem("id");
+      axios
+        .get(`/ticketnow/api/v1/journey/get/${id}`)
+        .then((response) => {
+          this.tableLoading = false;
+
+          if (response.status == 200) {
+            this.tableData = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.tableLoading = false;
+        });
+    },
+  },
+
+  mounted() {
+    this.getJourneys();
+  },
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.tableText {
+  font-weight: 550;
+}
+.tableData {
+  display: flex;
+  align-items: flex-start;
+}
+
+.label-top {
+  font-weight: 500;
+}
+.table >>> th {
+  font-size: 17px !important;
+}
+.table >>> tr > td {
+  font-size: 16px !important;
+}
+
+.table >>> .v-data-footer__select,
+.table >>> .v-select__selection,
+.table >>> .v-data-footer__pagination {
+  font-size: 16px;
+}
+.dataTable {
+  max-width: 1100px;
+}
+</style>
