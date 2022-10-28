@@ -30,13 +30,16 @@
     <v-main>
       <router-view />
     </v-main>
+
+    <Footer class="mt-10" />
   </v-app>
 </template>
 
 <script>
 import AppBar from "./views/AppBar.vue";
+import Footer from "./views/Footer.vue";
 export default {
-  components: { AppBar },
+  components: { AppBar, Footer },
   name: "App",
 
   data: () => ({

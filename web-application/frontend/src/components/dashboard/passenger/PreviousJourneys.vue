@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      min-height="300"
+      min-height="450"
       min-width="300"
       elevation="14"
       rounded="true"

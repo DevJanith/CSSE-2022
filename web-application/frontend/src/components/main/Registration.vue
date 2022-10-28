@@ -352,6 +352,7 @@ export default {
           password: this.password,
           mobileNo: this.mobileNumber,
           name: this.name,
+          type: "passenger",
         };
         this.storedID = this.id;
         this.registerBtnLoading = true;

@@ -7,10 +7,7 @@
       rounded="true"
       class="pa-7"
     >
-      <v-row class="mb-5">
-        <v-icon size="30">schedule</v-icon>
-        <h1 class="heading ml-4">Timeable</h1>
-      </v-row>
+      <v-row class="mb-5"> sdsdsdsd </v-row>
     </v-card>
   </div>
 </template>

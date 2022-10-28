@@ -5,6 +5,7 @@ import Login from "../components/main/Login.vue";
 import Register from "../components/main/Registration.vue";
 import Passenger from "../components/dashboard/Passenger.vue";
 import TransportManager from "../components/dashboard/TransportManager.vue";
+import Timetable from "../components/dashboard/passenger/TimetableComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/manager-dashboard",
     name: "managerDashboard",
     component: TransportManager,
+  },
+  {
+    path: "/timetables",
+    name: "timetables",
+    component: Timetable,
   },
   {
     path: "/about",

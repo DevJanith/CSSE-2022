@@ -5,33 +5,43 @@
       <v-row class="mb-5">
         <v-icon size="35">dashboard</v-icon>
         <h1 class="headingLarge ml-4">Passenger Dashboard</h1>
+        <v-spacer></v-spacer>
+        <v-btn
+          class="ml-3 text-capitalize mt-3"
+          color="warning"
+          @click="goToTimetables()"
+          >View Bus Timetable <v-icon class="ml-3">schedule</v-icon></v-btn
+        >
       </v-row>
 
       <v-container class="pa-0 mb-8">
-        <v-row class="my-5">
+        <v-row class="my-10">
           <div class="titleLarge">
-            <v-row>
+            <v-row class="ml-2">
               You have
               <div class="mx-3 primary--text">{{ credits }}</div>
               Credits available in your account
-              <v-btn class="ml-3" color="warning">Add More Credit</v-btn>
+              <v-btn class="ml-3 text-capitalize white--text" color="#dc5353"
+                >Add More Credit
+                <v-icon class="ml-3">paid</v-icon>
+              </v-btn>
             </v-row>
           </div>
         </v-row>
       </v-container>
 
       <v-row>
-        <v-col cols="6"> <QRCode /> </v-col>
         <v-col cols="6">
           <PreviousJourneys />
         </v-col>
+        <v-col cols="6"> <QRCode /> </v-col>
       </v-row>
 
-      <v-row align="center" justify="center">
+      <!-- <v-row align="center" justify="center">
         <v-col cols="8">
           <Timetable />
         </v-col>
-      </v-row>
+      </v-row> -->
     </div>
   </div>
 </template>
@@ -54,6 +64,9 @@ export default {
   },
 
   methods: {
+    goToTimetables() {
+      this.$router.push("/timetables");
+    },
     getUserData() {
       axios
         .get(`/ticketnow/api/v1/user/${this.id}`)

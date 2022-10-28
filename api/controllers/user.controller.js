@@ -88,13 +88,14 @@ export const signUp = async (req, res) => {
       userID: userID,
       email: email,
       password: hashPassword,
-      type: "passenger",
+      type: type,
       mobileNo: mobileNo,
       creditAmount: 1000,
       otp: otp,
       name: name,
     });
 
+    console.log(userDetails);
     const userResult = await userDetails.save();
 
     mailService(email, otp);
