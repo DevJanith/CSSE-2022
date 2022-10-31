@@ -6,7 +6,7 @@ const transportSchema = mongoose.Schema({
         require: true,
     },
     dateTime: {
-        type: Date,
+        type: String,
         require: true,
     },
     location: {
@@ -18,7 +18,7 @@ const transportSchema = mongoose.Schema({
         require: true
     },
     startLocation: {
-        type: Number,
+        type: String,
         require: true,
     },
     endLocation: {
