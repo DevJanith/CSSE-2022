@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import Journey from "../models/journey.model.js";
+const mongoose = require("mongoose");
+const Journey = require("../models/journey.model.js");
 
-export const addJourney = async (req, res) => {
+const addJourney = async (req, res) => {
   const { busNo, passenger, startLocation, endLocation, fare, date } = req.body;
 
   const journey = {
@@ -29,7 +29,7 @@ export const addJourney = async (req, res) => {
   }
 };
 
-export const getJourneys = async (req, res) => {
+const getJourneys = async (req, res) => {
   try {
     const journeys = await Journey.find();
 
@@ -51,7 +51,7 @@ export const getJourneys = async (req, res) => {
   }
 };
 
-export const getJourneysOfaUser = async (req, res) => {
+const getJourneysOfaUser = async (req, res) => {
   const id = req.params.id;
   try {
     const journeys = await Journey.find({ passenger: id });
@@ -62,4 +62,10 @@ export const getJourneysOfaUser = async (req, res) => {
     res.status(404);
     res.json({ message: error.message });
   }
+};
+
+module.exports = {
+  addJourney,
+  getJourneys,
+  getJourneysOfaUser,
 };

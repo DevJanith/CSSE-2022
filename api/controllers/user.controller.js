@@ -1,12 +1,9 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import uuid from "react-uuid";
-import mongoose from "mongoose";
-import nodemailer from "nodemailer";
-import User from "../models/user.model.js";
-import crypto from "crypto";
+const User = require("../models/user.model.js");
+const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-export const signIn = async (req, res) => {
+const signIn = async (req, res) => {
   const { userID, password } = req.body;
 
   try {
@@ -52,7 +49,7 @@ export const signIn = async (req, res) => {
   }
 };
 
-export const signUp = async (req, res) => {
+const signUp = async (req, res) => {
   const { userID, email, password, type, name, mobileNo } = req.body;
 
   try {
@@ -113,7 +110,7 @@ export const signUp = async (req, res) => {
   }
 };
 
-export const getUsers = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     const users = await User.find();
 
@@ -127,7 +124,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const getUser = async (req, res) => {
+const getUser = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -144,7 +141,7 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const checkOTP = async (req, res) => {
+const checkOTP = async (req, res) => {
   const { userID, otp } = req.body;
 
   const existingUser = await User.findOne({ userID: userID });
@@ -176,7 +173,7 @@ export const checkOTP = async (req, res) => {
 
 // Add credit to passenger account
 
-export const addCredit = async (req, res) => {
+const addCredit = async (req, res) => {
   const { userID, amount } = req.body;
 
   const existingUser = await User.findOne({ userID: userID });
@@ -225,7 +222,7 @@ function mailService(email, password) {
     if (err) {
       console.log("Error " + err);
     } else {
-      console.log("Email sent successfully");
+      // console.log("Email sent successfully");
     }
   });
 }
@@ -240,3 +237,12 @@ function generateOTP() {
   }
   return OTP;
 }
+
+module.exports = {
+  signIn,
+  signUp,
+  getUsers,
+  getUser,
+  checkOTP,
+  addCredit,
+};

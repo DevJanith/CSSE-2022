@@ -1,12 +1,21 @@
-import express from "express";
-import {
+// import express from "express";
+// import {
+//   getUser,
+//   getUsers,
+//   signIn,
+//   signUp,
+//   checkOTP,
+//   addCredit,
+// } from "../controllers/user.controller.js";
+const express = require("express");
+const {
   getUser,
   getUsers,
   signIn,
   signUp,
   checkOTP,
   addCredit,
-} from "../controllers/user.controller.js";
+} = require("../controllers/user.controller.js");
 
 const router = express.Router();
 
@@ -17,4 +26,6 @@ router.get("/:id", getUser);
 router.post("/check-otp", checkOTP);
 router.post("/add-credit", addCredit);
 
-export default router;
+// export default router;
+
+module.exports = router;

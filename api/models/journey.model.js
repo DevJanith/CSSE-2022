@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const journeySchema = mongoose.Schema({
   busNo: {
@@ -28,4 +29,5 @@ const journeySchema = mongoose.Schema({
 
 const Journey = mongoose.model("Journey", journeySchema);
 
-export default Journey;
+// export default Journey;
+module.exports = Journey;
