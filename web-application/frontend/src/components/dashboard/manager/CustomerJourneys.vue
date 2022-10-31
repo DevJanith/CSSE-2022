@@ -7,7 +7,7 @@
     <div class="titleLarge my-10">
       <v-row class="ml-2">
         Total Revenue <v-icon class="ml-3">paid</v-icon>
-        <div class="mx-3 primary--text">{{ totalAmount }}</div>
+        <div class="mx-3 primary--text">{{ totalAmount.toLocaleString() }}</div>
         LKR
 
         <v-spacer></v-spacer>
@@ -24,8 +24,10 @@
             :json-data="tableData"
             csv-title="Passenger Journey Report"
           >
-            Download Report
-            <v-icon>file_download</v-icon>
+            <v-btn color="orange" class="text-capitalize">
+              Download Report
+              <v-icon>file_download</v-icon>
+            </v-btn>
           </VueJsonToCsv>
         </div>
       </v-row>
@@ -36,7 +38,7 @@
       max-height="800"
       elevation="14"
       rounded="true"
-      class="pa-7 fill-height"
+      class="pa-7 fill-height mb-10"
     >
       <v-row class="mb-5">
         <v-container fluid>

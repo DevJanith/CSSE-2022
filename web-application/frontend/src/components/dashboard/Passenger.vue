@@ -14,7 +14,7 @@
         >
       </v-row>
 
-      <v-container class="pa-0 mb-8">
+      <v-container class="pa-0 mb-8" fluid>
         <v-row class="my-10">
           <div class="titleLarge">
             <v-row class="ml-2">
@@ -244,7 +244,7 @@ export default {
             } else {
               this.message.chip = true;
               this.message.text = "Failed to add credit to your account";
-              this.message.color = "red";
+              this.message.color = "orange";
             }
           })
           .catch((err) => {
@@ -252,13 +252,13 @@ export default {
             this.isLoading = false;
             this.message.chip = true;
             this.message.text = "Something went wrong!";
-            this.message.color = "red";
+            this.message.color = "orange";
           });
       } else {
         this.isLoading = false;
         this.message.chip = true;
         this.message.text = "Please Fill Details Correctly";
-        this.message.color = "red";
+        this.message.color = "orange";
       }
     },
     goToTimetables() {

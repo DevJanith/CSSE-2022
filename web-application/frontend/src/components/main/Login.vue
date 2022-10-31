@@ -11,12 +11,12 @@
                   src="../../assets/logo.png"
                   alt=""
                   width="150"
-                  class="mt-16 ml-10"
+                  class="ml-10 mt-3"
                 />
               </center>
               <!-- <p class="primary--text ml-10 subname">CFI DASHBOARD</p> -->
 
-              <div class="ma-10">
+              <div class="mx-10">
                 <h1 class="app-text">Login</h1>
               </div>
               <div class="ml-8">

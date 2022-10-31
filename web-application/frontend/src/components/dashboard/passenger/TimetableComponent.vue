@@ -44,7 +44,7 @@
       </v-card>
     </v-dialog> -->
 
-    <v-dialog v-model="dialog" width="700" persistent>
+    <v-dialog v-model="dialog" width="90%" persistent>
       <v-card>
         <v-card-title class="text-h5 primary white--text">
           Timetable
@@ -94,6 +94,7 @@ import PassengerAppBar from "@/views/appbars/PassengerAppBar.vue";
 
 import axios from "axios";
 import Timetable from "./Timetable.vue";
+import moment from "moment";
 
 export default {
   components: { PassengerAppBar, Timetable },
@@ -104,27 +105,27 @@ export default {
       userID: sessionStorage.getItem("userID"),
       id: sessionStorage.getItem("id"),
       credits: "",
-      today: "2019-01-08",
+      today: moment().format("YYYY-MM-DD"),
       events: [
-        {
-          name: "Weekly Meeting",
-          start: "2019-01-07 09:00",
-          end: "2019-01-07 09:00",
-        },
-        {
-          name: "Weekly Meeting",
-          start: "2019-01-07 10:00",
-          end: "2019-01-07 10:00",
-        },
-        {
-          name: `Thomas' Birthday`,
-          start: "2019-01-10",
-        },
-        {
-          name: "Mash Potatoes",
-          start: "2019-01-09 12:30",
-          end: "2019-01-09 15:30",
-        },
+        // {
+        //   name: "Weekly Meeting",
+        //   start: "2019-01-07 09:00",
+        //   end: "2019-01-07 09:00",
+        // },
+        // {
+        //   name: "Weekly Meeting",
+        //   start: "2019-01-07 10:00",
+        //   end: "2019-01-07 10:00",
+        // },
+        // {
+        //   name: `Thomas' Birthday`,
+        //   start: "2019-01-10",
+        // },
+        // {
+        //   name: "Mash Potatoes",
+        //   start: "2019-01-09 12:30",
+        //   end: "2019-01-09 15:30",
+        // },
       ],
     };
   },
@@ -133,28 +134,39 @@ export default {
     gotoHome() {
       this.$router.push("/passenger-dashboard");
     },
-    getUserData() {
+    getTimetable() {
       axios
-        .get(`/ticketnow/api/v1/user/${this.id}`)
+        .get(`/ticketnow/api/v1/transport`)
         .then((response) => {
-          this.verifyingOTP = false;
+          this.tableLoading = false;
 
           if (response.status == 200) {
-            this.credits = response.data.result.creditAmount;
-          } else {
-            this.credits = "N/A";
+            let data = response.data;
+
+            let eventArray = [];
+            data.forEach((element) => {
+              var tempObject = {
+                name: element.busNO,
+                start: element.dateTime,
+                end: element.dateTime,
+              };
+
+              eventArray.push(tempObject);
+            });
+
+            this.events = eventArray;
+            console.log(this.events);
           }
         })
         .catch((err) => {
           console.log(err);
-          this.credits = "N/A";
         });
     },
   },
 
   mounted() {
+    this.getTimetable();
     this.$refs.calendar.scrollToTime("08:00");
-    this.getUserData();
   },
 };
 </script>

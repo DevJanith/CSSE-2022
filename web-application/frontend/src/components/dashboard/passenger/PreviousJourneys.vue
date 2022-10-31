@@ -26,11 +26,11 @@
               <v-icon small class="mr-1 mb-1">calendar_month</v-icon
               >{{ header.text }}
             </template>
-
+            <!-- 
             <template v-slot:[`header.busNo`]="{ header }">
               <v-icon small class="mr-1 mb-1">airport_shuttle</v-icon
               >{{ header.text }}
-            </template>
+            </template> -->
 
             <template v-slot:[`header.startLocation`]="{ header }">
               <v-icon small class="mr-1 mb-1">start</v-icon>{{ header.text }}
@@ -157,7 +157,7 @@ export default {
 .table >>> .v-data-footer__pagination {
   font-size: 16px;
 }
-.dataTable {
+/* .dataTable {
   max-width: 1100px;
-}
+} */
 </style>

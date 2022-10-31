@@ -4,8 +4,13 @@
       <v-icon size="35">schedule</v-icon>
       <h1 class="headingLarge ml-4">Manage Timetables</h1>
       <v-spacer></v-spacer>
-      <v-btn color="blue" class="mt-2 white--text" @click="AddDialog = true"
-        >Add Timetable</v-btn
+      <v-btn
+        color="blue"
+        class="mt-2 white--text text-capitalize"
+        @click="AddDialog = true"
+        >Add Item for Timetable
+
+        <v-icon>add</v-icon></v-btn
       >
     </v-row>
 
@@ -15,7 +20,7 @@
       max-height="800"
       elevation="14"
       rounded="true"
-      class="pa-7 fill-height mb-5"
+      class="pa-7 fill-height mb-10"
     >
       <v-row class="mb-5">
         <v-container fluid>
@@ -71,7 +76,7 @@
                     fab
                     small
                     color="error"
-                    @click="openDeactivateDialog(item)"
+                    @click="opendeleteDialog(item)"
                     :disabled="item.accountStatus == 0"
                     class="text-capitalize"
                     v-bind="attrs"
@@ -113,7 +118,7 @@
           Add Timetable
         </v-card-title>
 
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form ref="addForm" v-model="valid" lazy-validation>
           <v-container>
             <div>
               <p class="app-text">Bus Number</p>
@@ -260,7 +265,7 @@
                     color="primary"
                     width="100%"
                     class="rounded-lg h5 text-capitalize mt-2"
-                    @click="updateUser"
+                    @click="addTimetable()"
                     :loading="isLoading"
                   >
                     <div class="btnText">Add Timetable</div>
@@ -280,7 +285,7 @@
           Edit Timetable
         </v-card-title>
 
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form ref="editForm" v-model="valid" lazy-validation>
           <v-container>
             <div>
               <p class="app-text">Bus Number</p>
@@ -324,7 +329,7 @@
                       <v-btn
                         text
                         color="primary"
-                        @click="$refs.dateDialog.save(date)"
+                        @click="$refs.dateDialog.save(date), (this.date = date)"
                       >
                         OK
                       </v-btn>
@@ -359,7 +364,7 @@
                       <v-btn
                         text
                         color="primary"
-                        @click="$refs.dialog.save(time)"
+                        @click="$refs.dialog.save(time), (this.time = time)"
                       >
                         OK
                       </v-btn>
@@ -427,7 +432,7 @@
                     color="primary"
                     width="100%"
                     class="rounded-lg h5 text-capitalize mt-2"
-                    @click="updateUser"
+                    @click="updateItem()"
                     :loading="isLoading"
                   >
                     <div class="btnText">Update</div>
@@ -439,14 +444,30 @@
         </v-form>
       </v-card>
     </v-dialog>
+
+    <confirm-dialog
+      v-if="confrimDeleteDialog.show"
+      :message="confrimDeleteDialog.message"
+      :message1="confrimDeleteDialog.message1"
+      :buttonText="confrimDeleteDialog.buttonText"
+      @close-alert="confrimDeleteDialog.show = false"
+      @confirm-alert="deleteItem()"
+    />
+    <v-snackbar v-model="message.chip" top rounded="pill" :color="message.color"
+      ><div class="text-center">
+        {{ message.text }}
+      </div>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import VueJsonToCsv from "vue-json-to-csv";
+import ConfirmDialog from "@/components/common/ConfirmDialog.vue";
+import moment from "moment";
 export default {
-  components: { VueJsonToCsv },
+  components: { VueJsonToCsv, ConfirmDialog },
   data() {
     return {
       footerProps: { "items-per-page-options": [5, 10] },
@@ -458,13 +479,16 @@ export default {
       time: null,
       menu2: false,
       modal2: false,
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      date: moment().format("YYYY-MM-DD"),
       menu: false,
       modal: false,
       menu2: false,
       valid: true,
+      message: {
+        chip: false,
+        text: "",
+        color: "",
+      },
 
       //form data
 
@@ -485,6 +509,16 @@ export default {
       startLocation_add: "",
       endLocation_add: "",
       travellingRoot_add: "",
+
+      confrimDeleteDialog: {
+        show: false,
+        message: "Warning!",
+        message1: "Do you want to delete this item from the timetable?",
+        buttonText: "Ok",
+      },
+
+      deleteItemID: "",
+      editItemID: "",
       headers: [
         {
           text: "Bus No",
@@ -538,9 +572,136 @@ export default {
   },
 
   methods: {
+    opendeleteDialog(item) {
+      this.confrimDeleteDialog.show = true;
+      this.deleteItemID = item._id;
+    },
+
+    // Delete Item
+    deleteItem() {
+      axios
+        .delete(`/ticketnow/api/v1/transport/${this.deleteItemID}`)
+        .then((response) => {
+          this.confrimDeleteDialog.show = false;
+          if (response.status == 200) {
+            this.message.chip = true;
+            this.message.text = "Successfully deleted item from timetable.";
+            this.message.color = "green";
+
+            this.getTimetableData();
+          } else {
+            this.message.chip = true;
+            this.message.text = `Failed to delete item`;
+            this.message.color = "orange";
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.confrimDeleteDialog.show = true;
+          this.message.chip = true;
+          this.message.text = `Failed to delete item`;
+          this.message.color = "orange";
+        });
+    },
+
+    // Add Item for Timetable
+    addTimetable() {
+      const isValid = this.$refs.addForm.validate();
+
+      if (isValid) {
+        this.AddDialog = false;
+        const data = {
+          busNO: this.busNo_add,
+          dateTime: this.date + " " + this.time,
+          location: this.busStand_add,
+          travelingRoot: this.travellingRoot_add,
+          startLocation: this.startLocation_add,
+          endLocation: this.endLocation_add,
+        };
+
+        axios
+          .post("/ticketnow/api/v1/transport/", data)
+          .then((response) => {
+            console.log(response);
+
+            if (response.status == 201 || response.status == 200) {
+              this.message.chip = true;
+              this.message.text = "Added to timetable";
+              this.message.color = "green";
+
+              this.$refs.addForm.reset();
+              this.getTimetableData();
+            } else {
+              this.message.chip = true;
+              this.message.text = "Failed to add item to Timetable";
+              this.message.color = "orange";
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+
+            this.message.chip = true;
+            this.message.text = "Something Went Wrong!";
+            this.message.color = "orange";
+          });
+      } else {
+        this.message.chip = true;
+        this.message.text = "Please Fill Details Correctly";
+        this.message.color = "orange";
+      }
+    },
+
+    // Update item in table
+    updateItem() {
+      const isValid = this.$refs.editForm.validate();
+
+      if (isValid) {
+        this.EditDialog = false;
+        const data = {
+          busNO: this.busNo,
+          dateTime: this.date + " " + this.time,
+          location: this.busStand,
+          travelingRoot: this.travellingRoot,
+          startLocation: this.startLocation,
+          endLocation: this.endLocation,
+        };
+
+        axios
+          .patch(`/ticketnow/api/v1/transport/${this.editItemID}`, data)
+          .then((response) => {
+            console.log(response);
+
+            if (response.status == 201 || response.status == 200) {
+              this.message.chip = true;
+              this.message.text = "Succesfully updated the record!";
+              this.message.color = "green";
+
+              this.$refs.editForm.reset();
+              this.getTimetableData();
+            } else {
+              this.message.chip = true;
+              this.message.text = "Failed to update record";
+              this.message.color = "orange";
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+
+            this.message.chip = true;
+            this.message.text = "Something Went Wrong!";
+            this.message.color = "orange";
+          });
+      } else {
+        this.message.chip = true;
+        this.message.text = "Please Fill Details Correctly";
+        this.message.color = "orange";
+      }
+    },
     openEditDialog(item) {
       this.EditDialog = true;
       this.editTimetable = item;
+
+      this.editItemID = item._id;
 
       this.busNo = item.busNO;
       this.busStand = item.location;
@@ -551,7 +712,7 @@ export default {
       this.date = item.dateTime.slice(0, 10);
       this.time = item.dateTime.slice(11, 16);
     },
-    getJourneys() {
+    getTimetableData() {
       this.tableLoading = true;
       const id = sessionStorage.getItem("id");
       axios
@@ -572,7 +733,7 @@ export default {
   },
 
   mounted() {
-    this.getJourneys();
+    this.getTimetableData();
   },
 };
 </script>

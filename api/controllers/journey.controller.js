@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Journey from "../models/journey.model.js";
 
 export const addJourney = async (req, res) => {
-  const { busNo, passenger, startLocation, endLocation, fare } = req.body;
+  const { busNo, passenger, startLocation, endLocation, fare, date } = req.body;
 
   const journey = {
     busNo,
@@ -10,6 +10,7 @@ export const addJourney = async (req, res) => {
     startLocation,
     endLocation,
     fare,
+    date,
   };
   const newJourney = new Journey(journey);
   try {

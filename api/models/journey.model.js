@@ -23,7 +23,6 @@ const journeySchema = mongoose.Schema({
   },
   date: {
     type: String,
-    default: new Date(),
   },
 });
 

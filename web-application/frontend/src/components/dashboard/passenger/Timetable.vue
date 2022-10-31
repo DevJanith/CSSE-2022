@@ -111,39 +111,38 @@ export default {
       ],
 
       tableData: [
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 28 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
-
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 29 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 30 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 31 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
+        // {
+        //   busNo: "asass",
+        //   dateTime: "Fri Oct 28 2022 10:49:13 GMT+0530 (India Standard Time)",
+        //   location: "Location",
+        //   travelingRoot: "Root",
+        //   startLocation: "Start Location",
+        //   endLocation: "End Location",
+        // },
+        // {
+        //   busNo: "asass",
+        //   dateTime: "Fri Oct 29 2022 10:49:13 GMT+0530 (India Standard Time)",
+        //   location: "Location",
+        //   travelingRoot: "Root",
+        //   startLocation: "Start Location",
+        //   endLocation: "End Location",
+        // },
+        // {
+        //   busNo: "asass",
+        //   dateTime: "Fri Oct 30 2022 10:49:13 GMT+0530 (India Standard Time)",
+        //   location: "Location",
+        //   travelingRoot: "Root",
+        //   startLocation: "Start Location",
+        //   endLocation: "End Location",
+        // },
+        // {
+        //   busNo: "asass",
+        //   dateTime: "Fri Oct 31 2022 10:49:13 GMT+0530 (India Standard Time)",
+        //   location: "Location",
+        //   travelingRoot: "Root",
+        //   startLocation: "Start Location",
+        //   endLocation: "End Location",
+        // },
       ],
     };
   },
@@ -198,7 +197,7 @@ export default {
 .table >>> .v-data-footer__pagination {
   font-size: 16px;
 }
-.dataTable {
+/* .dataTable {
   max-width: 1500;
-}
+} */
 </style>

@@ -32,7 +32,7 @@
                         <h3 v-if="switchUserType" class="ml-3 mt-5">
                           Local User
                         </h3>
-                        <h3 v-else class="ml-3 mt-4">Foreigner</h3>
+                        <h3 v-else class="ml-3 mt-5">Foreigner</h3>
                       </v-row>
                       <v-row>
                         <v-col cols="6">
@@ -266,7 +266,7 @@ export default {
       otp: "",
       storedID: "",
       passportRules: [
-        (v) => !!v || "NIC is required",
+        (v) => !!v || "This field is required",
         (v) =>
           /^[A-PR-WYa-pr-wy][1-9]\\d\\s?\\d{4}[1-9]$/.test(v) ||
           "Please enter valid passport number",
