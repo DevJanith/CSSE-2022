@@ -3,7 +3,7 @@
     <login-app-bar />
     <v-container>
       <v-row align="center" justify="center">
-        <v-col cols="5">
+        <v-col cols="6">
           <v-card class="pb-10 mt-4 pr-8" elevation="10">
             <div>
               <center>
@@ -25,7 +25,7 @@
                     <div>
                       <p class="app-text">User ID</p>
                       <v-text-field
-                        label="NIC / Passport NUmber"
+                        label="NIC / User ID / Passport Number"
                         outlined
                         v-model="userID"
                         :rules="userIDCheck"

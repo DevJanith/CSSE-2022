@@ -17,6 +17,6 @@ export default {};
 
 .footer {
   font-weight: 700;
-  height: 80px;
+  height: 60px;
 }
 </style>

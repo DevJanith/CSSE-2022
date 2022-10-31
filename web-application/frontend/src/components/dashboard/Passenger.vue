@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-10">
+  <div class="pt-10 fill-height secondary">
     <passenger-app-bar />
     <div class="px-15">
       <v-row class="mb-5">

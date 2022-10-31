@@ -1,12 +1,42 @@
 <template>
-  <div>
+  <div class="px-15 secondary">
+    <v-row class="my-5">
+      <v-icon size="35">airport_shuttle</v-icon>
+      <h1 class="headingLarge ml-4">Passengers Journeys List</h1>
+    </v-row>
+    <div class="titleLarge my-10">
+      <v-row class="ml-2">
+        Total Revenue <v-icon class="ml-3">paid</v-icon>
+        <div class="mx-3 primary--text">{{ totalAmount }}</div>
+        LKR
+
+        <v-spacer></v-spacer>
+        <!-- <v-btn
+          class="text-capitalize white--text mr-3"
+          color="#dc5353"
+          @click="addcreditDialog = true"
+          :loading="isLoading"
+          >Download Data
+          <v-icon class="ml-3">download</v-icon>
+        </v-btn> -->
+        <div class="download downloadText">
+          <VueJsonToCsv
+            :json-data="tableData"
+            csv-title="Passenger Journey Report"
+          >
+            Download Report
+            <v-icon>file_download</v-icon>
+          </VueJsonToCsv>
+        </div>
+      </v-row>
+    </div>
     <v-card
       min-height="450"
       min-width="300"
       max-height="800"
       elevation="14"
       rounded="true"
-      class="pa-7"
+      class="pa-7 fill-height"
     >
       <v-row class="mb-5">
         <v-container fluid>
@@ -19,18 +49,14 @@
             :footer-props="footerProps"
           >
             <!-- header -->
-            <template v-slot:[`header.dateTime`]="{ header }">
+            <template v-slot:[`header.date`]="{ header }">
               <v-icon small class="mr-1 mb-1">calendar_month</v-icon
               >{{ header.text }}
             </template>
 
-            <!-- <template v-slot:[`header.busNo`]="{ header }">
+            <template v-slot:[`header.busNo`]="{ header }">
               <v-icon small class="mr-1 mb-1">airport_shuttle</v-icon
               >{{ header.text }}
-            </template> -->
-
-            <template v-slot:[`header.location`]="{ header }">
-              <v-icon small class="mr-1 mb-1">pin_drop</v-icon>{{ header.text }}
             </template>
 
             <template v-slot:[`header.startLocation`]="{ header }">
@@ -64,30 +90,27 @@
 
 <script>
 import axios from "axios";
+import VueJsonToCsv from "vue-json-to-csv";
 export default {
+  components: { VueJsonToCsv },
   data() {
     return {
       footerProps: { "items-per-page-options": [5, 10] },
       tableLoading: false,
+      totalAmount: "",
       headers: [
         {
           text: "Bus No",
           align: "start",
           filterable: false,
-          value: "busNO",
+          value: "busNo",
           class: "white",
         },
 
         {
           text: "Date",
           align: "start",
-          value: "dateTime",
-          class: "white",
-        },
-        {
-          text: "Location",
-          align: "start",
-          value: "location",
+          value: "date",
           class: "white",
         },
         {
@@ -103,62 +126,29 @@ export default {
           class: "white",
         },
         {
-          text: "Travelling Root",
-          value: "travelingRoot",
+          text: "Fare",
+          value: "fare",
           align: "start",
           class: "white",
         },
       ],
 
-      tableData: [
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 28 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
-
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 29 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 30 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
-        {
-          busNo: "asass",
-          dateTime: "Fri Oct 31 2022 10:49:13 GMT+0530 (India Standard Time)",
-          location: "Location",
-          travelingRoot: "Root",
-          startLocation: "Start Location",
-          endLocation: "End Location",
-        },
-      ],
+      tableData: [],
     };
   },
 
   methods: {
-    getTimetable() {
+    getJourneys() {
       this.tableLoading = true;
       const id = sessionStorage.getItem("id");
       axios
-        .get(`/ticketnow/api/v1/transport`)
+        .get(`/ticketnow/api/v1/journey/all`)
         .then((response) => {
           this.tableLoading = false;
 
           if (response.status == 200) {
-            this.tableData = response.data;
+            this.tableData = response.data.data;
+            this.totalAmount = response.data.totalAmount;
           }
         })
         .catch((err) => {
@@ -169,7 +159,7 @@ export default {
   },
 
   mounted() {
-    this.getTimetable();
+    this.getJourneys();
   },
 };
 </script>
@@ -198,7 +188,13 @@ export default {
 .table >>> .v-data-footer__pagination {
   font-size: 16px;
 }
-.dataTable {
-  max-width: 1500;
+/* .dataTable {
+  max-width: 1100px;
+} */
+.download {
+  cursor: pointer;
+}
+.downloadText {
+  font-size: 20px;
 }
 </style>
