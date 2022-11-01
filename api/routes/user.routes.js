@@ -1,12 +1,3 @@
-// import express from "express";
-// import {
-//   getUser,
-//   getUsers,
-//   signIn,
-//   signUp,
-//   checkOTP,
-//   addCredit,
-// } from "../controllers/user.controller.js";
 const express = require("express");
 const {
   getUser,
@@ -25,7 +16,5 @@ router.get("/all", getUsers);
 router.get("/:id", getUser);
 router.post("/check-otp", checkOTP);
 router.post("/add-credit", addCredit);
-
-// export default router;
 
 module.exports = router;

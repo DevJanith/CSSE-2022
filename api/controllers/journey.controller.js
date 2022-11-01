@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Journey = require("../models/journey.model.js");
 
+// Add journey to the system
 const addJourney = async (req, res) => {
   const { busNo, passenger, startLocation, endLocation, fare, date } = req.body;
 
@@ -29,6 +30,7 @@ const addJourney = async (req, res) => {
   }
 };
 
+// Get All journeys
 const getJourneys = async (req, res) => {
   try {
     const journeys = await Journey.find();
@@ -51,6 +53,7 @@ const getJourneys = async (req, res) => {
   }
 };
 
+// Get journeys of a user
 const getJourneysOfaUser = async (req, res) => {
   const id = req.params.id;
   try {

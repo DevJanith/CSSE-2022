@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// User sign in function
 const signIn = async (req, res) => {
   const { userID, password } = req.body;
 
@@ -49,6 +50,9 @@ const signIn = async (req, res) => {
   }
 };
 
+// User Sign Up
+// This method used to register user to to system
+// Including email sending as well
 const signUp = async (req, res) => {
   const { userID, email, password, type, name, mobileNo } = req.body;
 
@@ -110,6 +114,7 @@ const signUp = async (req, res) => {
   }
 };
 
+// Get all the users in the syystem
 const getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -124,6 +129,8 @@ const getUsers = async (req, res) => {
   }
 };
 
+// Get data of a single user
+// field from the request body ==>>> _id
 const getUser = async (req, res) => {
   const { id } = req.params;
 
@@ -141,6 +148,8 @@ const getUser = async (req, res) => {
   }
 };
 
+// Check OTP function
+// Check user sending OTP with the value on the database
 const checkOTP = async (req, res) => {
   const { userID, otp } = req.body;
 
@@ -197,7 +206,8 @@ const addCredit = async (req, res) => {
   res.status(200).json({ code: "01", result: "credit added" });
 };
 
-// mail service
+// mail service method
+// email with configurations
 function mailService(email, password) {
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -226,6 +236,8 @@ function mailService(email, password) {
     }
   });
 }
+
+// Generate fout digit OTP
 
 function generateOTP() {
   // Declare a digits variable

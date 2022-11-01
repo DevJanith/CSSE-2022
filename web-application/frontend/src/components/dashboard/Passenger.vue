@@ -38,7 +38,14 @@
         <v-col cols="6">
           <PreviousJourneys />
         </v-col>
-        <v-col cols="6"> <QRCode /> </v-col>
+        <v-col cols="6">
+          <v-row class="pt-3"><QRCode /></v-row>
+          <v-row>
+            <v-card elevation="10" rounded class="mt-5 py-10">
+              <v-img src="../../assets/offers.png"
+            /></v-card>
+          </v-row>
+        </v-col>
       </v-row>
 
       <!-- Add Credit -->
