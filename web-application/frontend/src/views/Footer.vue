@@ -1,7 +1,7 @@
 <template>
   <div class="primary py-2 footer app-text">
     <p class="text-center white--text mt-4">
-      © Ticket Us 2022 - All Right Reserved
+      © Ticket Now 2022 - All Right Reserved
     </p>
   </div>
 </template>

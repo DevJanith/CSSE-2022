@@ -4,7 +4,7 @@
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
       <v-img
-        alt="Ticket Us Logo"
+        alt="Ticket Now Logo"
         class="shrink mt-3"
         contain
         src="../../assets/logo.png"
@@ -12,7 +12,7 @@
         width="70"
       />
 
-      <h1 class="text--white">Ticket Us</h1>
+      <h1 class="text--white">Ticket Now</h1>
       <h3 class="ml-10">Transport Manager Dashboard</h3>
 
       <v-spacer></v-spacer>

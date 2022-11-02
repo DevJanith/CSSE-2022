@@ -10,7 +10,7 @@
         width="70"
       />
 
-      <h1 class="text--white">Ticket Us</h1>
+      <h1 class="text--white">Ticket Now</h1>
     </div>
 
     <v-spacer></v-spacer>

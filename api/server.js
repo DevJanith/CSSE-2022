@@ -38,9 +38,9 @@ mongoose
   .then(() => {
     //  Comment below code when running tests
     // ---------------------------------------------
-    // app.listen(PORT, () => {
-    //   console.log(`Server Running on port : ${PORT}`);
-    // });
+    app.listen(PORT, () => {
+      console.log(`Server Running on port : ${PORT}`);
+    });
     // ---------------------------------------------
   })
   .catch((error) => {
