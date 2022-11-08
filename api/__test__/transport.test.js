@@ -18,7 +18,7 @@ describe("Test Transport Functionalities", () => {
             createdAt : "2022-06-14",
             updatedAt : "2022-09-30",
         });
-      expect(response.statusCode).toBe(200);
+      expect(response.statusCode).toBe(201);
         // expect(response.data.code).toEqual("01");
     });
   });
